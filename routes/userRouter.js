@@ -26,24 +26,21 @@ router.post("/request-code", async (req, res) => {
     await user.save();
 
     // Send verification code via SMS
-    const apiKey =
-      "634E2F616E704968663855714B752B31636758586944637866544C384B4264485855786F62506830644D413D";
-    const receptor = mobileNumber;
-    const message = encodeURIComponent(`${verificationCode}این یک پیام تست`); // Persian message encoded
+    const apiKey = process.env.KAVENEGAR_API_KEY;
+    const sUrl = `https://api.kavenegar.com/v1/${apiKey}/verify/lookup.json`;
 
-    const url = `https://api.kavenegar.com/v1/${apiKey}/sms/send.json?receptor=${receptor}`;
-    console.log(url);
+    //const url = `https://api.kavenegar.com/v1/${apiKey}/sms/send.json?receptor=${receptor}`;
+    console.log(sUrl);
 
     request.post(
-      url,
+      sUrl,
       {
         form: {
           receptor: mobileNumber,
           token: verificationCode,
-          template: "arequest",
+          template: "verificodeaseman",
         },
       },
-
       (err, response, body) => {
         if (err) {
           console.log("ERROR WHEN CALLING SMS API", err);
@@ -73,13 +70,19 @@ router.post("/verify-code", async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid verification code" });
     }
+    console.log(`Received verification code: ${verificationCode}`);
+    console.log(`Stored verification code: ${user.verificationCode}`);
+
+    if (user.verificationCode !== verificationCode) {
+      return res.status(400).json({ message: "Invalid verification code" });
+    }
 
     user.verified = true;
     user.verificationCode = undefined; // Clear the verification code
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+    const token = jwt.sign({ mobileNumber }, process.env.JWT_SECRET, {
+      expiresIn: "200d",
     });
 
     res.status(200).json({ message: "User verified successfully", token });
