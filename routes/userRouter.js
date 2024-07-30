@@ -81,9 +81,7 @@ router.post("/verify-code", async (req, res) => {
     user.verificationCode = undefined; // Clear the verification code
     await user.save();
 
-    const token = jwt.sign({ mobileNumber }, process.env.JWT_SECRET, {
-      expiresIn: "200d",
-    });
+    const token = jwt.sign({ mobileNumber }, process.env.JWT_SECRET, {});
 
     res.status(200).json({ message: "User verified successfully", token });
   } catch (error) {
