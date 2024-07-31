@@ -13,6 +13,25 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  name: {
+    type: String,
+  },
+  storeName: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  province: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  photo: { type: String, default: "defult.jpg" },
 });
 
 module.exports = mongoose.model("user", userSchema);

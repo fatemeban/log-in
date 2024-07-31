@@ -2,13 +2,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const userRoutes = require("./routes/userRouter");
+const userRoutes = require("./Routes/userRouter");
+const path = require("path");
 
 dotenv.config();
 //connestDB();
 
 const app = express();
 app.use(bodyParser.json());
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 ////////Routes///////////
 app.use("/api/users", userRoutes);
