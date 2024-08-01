@@ -13,10 +13,10 @@ const filterObj = (obj, ...allowedFields) => {
 
 // Update user information route, including photo upload
 exports.updateMe = catchAsync(async (req, res, next) => {
-  if (req.body.password || req.body.passwordConfirm) {
+  if (req.body.verificationCode || req.body.mobileNumber) {
     return next(
       new AppError(
-        "This route is not for password updates. Please use /updateMyPassword.",
+        "This route is not for password updates. Please use /updateMyNumber.",
         400
       )
     );
@@ -57,3 +57,20 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 exports.getProtected = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Access granted", user: req.user });
 });
+
+exports.getProfile = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
+  const user = await User.findById(userId).select("-_id -role -verified"); // Exclude sensitive information like password
+
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
+
+exports.updateNum = catchAsync(async (req, res, next) => {});

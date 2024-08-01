@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   mobileNumber: {
     type: String,
     required: true,
-    unique: true,
+    //unique: true,
   },
   verificationCode: {
     type: String,
@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
   photo: { type: String, default: "default.png" },
   description: {
     type: String,
+  },
+  role: {
+    type: String,
+    default: "user",
   },
 });
 

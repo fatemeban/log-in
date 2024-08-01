@@ -26,6 +26,37 @@ const upload = multer({ storage: storage });
 router.use(authMiddleware); // Ensure the user is authenticated for all routes
 
 router.patch("/updateMe", upload.single("photo"), userController.updateMe);
-router.get("/protected", userController.getProtected);
+router.delete("/deleteMe");
+router.patch("/updateMe", authMiddleware, userController.updateMe);
+router.patch("/updateMyNumber", authMiddleware, userController.updateNum);
+router.get("/Myprofile", authMiddleware, userController.getProfile);
+router.get("/protected", authMiddleware, userController.getProtected);
+
+///////////////////This route is not yet defined////////////////////////
+exports.getUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined!",
+  });
+};
+exports.createUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined!",
+  });
+};
+exports.updateUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined!",
+  });
+};
+exports.deleteUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined!",
+  });
+};
+//////////////////////////////////////////////////
 
 module.exports = router;

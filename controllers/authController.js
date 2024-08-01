@@ -24,6 +24,7 @@ exports.requestCode = catchAsync(async (req, res, next) => {
 
   const apiKey = process.env.KAVENEGAR_API_KEY;
   const sUrl = `https://api.kavenegar.com/v1/${apiKey}/verify/lookup.json`;
+  console.log(sUrl); /////test
 
   request.post(
     sUrl,
