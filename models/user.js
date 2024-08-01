@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  photo: { type: String, default: "defult.jpg" },
+  photo: { type: String, default: "default.png" },
+  description: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);
