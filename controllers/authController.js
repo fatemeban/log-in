@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const request = require("request");
 const dotenv = require("dotenv");
-const catchAsync = require("../utiles/catchAsync");
-const AppError = require("../utiles/appError");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ exports.requestCode = catchAsync(async (req, res, next) => {
   if (!user) {
     user = new User({ mobileNumber });
   }
-  const verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
+  const verificationCode = Math.floor(1000 + Math.random() * 9999).toString();
   user.verificationCode = verificationCode;
 
   await user.save();
@@ -38,6 +38,10 @@ exports.requestCode = catchAsync(async (req, res, next) => {
     (err, response, body) => {
       if (err) {
         console.log("ERROR WHEN CALLING SMS API", err);
+        return next(new AppError("Error sending SMS", 500));
+      }
+      if (response.statusCode !== 200) {
+        console.error("Unexpected response status:", response.statusCode);
         return next(new AppError("Error sending SMS", 500));
       }
       console.log(body);
@@ -63,6 +67,7 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
   if (user.verificationCode !== verificationCode) {
     return next(new AppError("Invalid verification code", 400));
   }
+  ///////return error if the verification code is not valid
 
   user.verified = true;
   user.verificationCode = undefined;

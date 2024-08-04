@@ -1,6 +1,6 @@
 const User = require("../models/user");
-const catchAsync = require("../utiles/catchAsync");
-const AppError = require("../utiles/appError");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
 
 // Helper function to filter out allowed fields
 const filterObj = (obj, ...allowedFields) => {
@@ -12,7 +12,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 // Update user information route, including photo upload
-exports.updateMe = catchAsync(async (req, res, next) => {
+exports.userInfo = catchAsync(async (req, res, next) => {
   if (req.body.verificationCode || req.body.mobileNumber) {
     return next(
       new AppError(
@@ -21,7 +21,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
       )
     );
   }
-
   const filteredBody = filterObj(
     req.body,
     "name",
@@ -29,7 +28,9 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     "province",
     "storeName",
     "phoneNumber",
-    "description"
+    "description",
+    "address",
+    "photo"
   );
 
   if (req.file) {
@@ -53,6 +54,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 // Example of a protected route
 exports.getProtected = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Access granted", user: req.user });
@@ -70,6 +73,28 @@ exports.getProfile = catchAsync(async (req, res, next) => {
     data: {
       user,
     },
+  });
+});
+
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.mobileNumber) {
+    return next(
+      new AppError(
+        "This route is not for password updates. Please use /updateMyNumber.",
+        400
+      )
+    );
+  }
+})
+
+exports.deleteme = catchAsync(async (req, res, next) => {
+  ///verify the mobile number
+  await User.findByIdAndUpdate(req.user.id), { active: false };
+
+  res.status(200).json({
+    status: "success",
+    message: "user deleted!",
   });
 });
 

@@ -1,5 +1,4 @@
-const AppError = require("../utiles/appError");
-
+const AppError = require("../utils/appError");
 
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
@@ -34,7 +33,6 @@ module.exports = (err, req, res, next) => {
     message: err.message,
   });
 };
-
 
 //////////////////////
 
