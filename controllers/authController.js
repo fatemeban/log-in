@@ -19,6 +19,7 @@ exports.requestCode = catchAsync(async (req, res, next) => {
   }
   const verificationCode = Math.floor(1000 + Math.random() * 9999).toString();
   user.verificationCode = verificationCode;
+  user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
 
   await user.save();
 
@@ -57,20 +58,27 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
       new AppError("Mobile number and verification code are required", 400)
     );
   }
-
   const user = await User.findOne({ mobileNumber, verificationCode });
 
   if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+
+  // 4. Check if the verification code matches
+  if (user.verificationCode !== verificationCode) {
     return next(new AppError("Invalid verification code", 400));
   }
 
-  if (user.verificationCode !== verificationCode) {
-    return next(new AppError("Invalid verification code", 400));
+// 5. Check if the verification code has expired
+  if (Date.now() > user.verificationCodeExpiresAt) {
+    return next(new AppError("Verification code has expired", 400));
   }
   ///////return error if the verification code is not valid
 
   user.verified = true;
   user.verificationCode = undefined;
+  user.verificationCodeExpiresAt = undefined;
+
   await user.save();
 
   const token = jwt.sign({ mobileNumber }, process.env.JWT_SECRET, {});

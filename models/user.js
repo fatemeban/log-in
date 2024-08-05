@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
   verificationCode: {
     type: String,
   },
+  verificationCodeExpiresAt: {
+    type: Date,
+  },
   verified: {
     type: Boolean,
     default: false,

@@ -25,4 +25,4 @@ const brandSchema = new mongoose.Schema(
 // brandSchema.set("toObject", { virtuals: true });
 
 // Optionally, you can add a custom method to the schema or use pre-save hooks here
-module.exports = module.exports = mongoose.model("Brand", brandSchema);
+module.exports = mongoose.model("Brand", brandSchema);

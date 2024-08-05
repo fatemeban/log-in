@@ -1,4 +1,4 @@
-const AppError = require("../utils/appError");
+const ErrorHandler = require("../utils/appError");
 
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
@@ -34,18 +34,33 @@ module.exports = (err, req, res, next) => {
   });
 };
 
+/////////////authError//////////////
+if (err.name === "CastError") {
+  err.message = `Invalid resource: ${err.path}`;
+  err.statusCode = 400;
+} else if (err.code === 11000) {
+  err.message = "Duplicate field value entered";
+  err.statusCode = 400;
+} else if (err.name === "JsonWebTokenError") {
+  err.message = "Invalid token";
+  err.statusCode = 401;
+} else if (err.name === "TokenExpiredError") {
+  err.message = "Token expired";
+  err.statusCode = 401;
+}
+
 //////////////////////
 
-const AppError = require("../utils/appError");
+// const AppError = require("../utils/appError");
 
-const errorHandler = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
+// const errorHandler = (err, req, res, next) => {
+//   err.statusCode = err.statusCode || 500;
+//   err.status = err.status || "error";
 
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-};
+//   res.status(err.statusCode).json({
+//     status: err.status,
+//     message: err.message,
+//   });
+// };
 
-module.exports = errorHandler;
+module.exports = ErrorHandler;

@@ -3,7 +3,7 @@ const Car = require("../models/car");
 const axios = require("axios");
 
 
-/////Import brands from an external API//////////
+/////////////Import brands from an external API//////////
 exports.importBrands = async (req, res) => {
   try {
     // Fetch data from external API
@@ -27,7 +27,7 @@ exports.importBrands = async (req, res) => {
   }
 };
 
-///////Import cars from an external API
+////////////Import cars from an external API/////////////
 exports.importCars = async (req, res) => {
   try {
     // Fetch data from external API
