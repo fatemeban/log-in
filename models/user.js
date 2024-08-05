@@ -83,5 +83,15 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+userSchema.virtual("profileImageUrl").get(function () {
+  // Base URL for images
+  const baseUrl = "http://localhost:3000/public/img/uploads/";
+
+  // Return the complete URL
+  return `${baseUrl}${this.photo}`;
+});
+
+userSchema.set("toJSON", { virtuals: true });
+userSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("user", userSchema);

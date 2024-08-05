@@ -1,14 +1,11 @@
 const mongoose = require("mongoose");
 
 const carSchema = new mongoose.Schema({
-  brand: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Brand",
-    required: true,
+  id: {
+    type: Number,
   },
-  supplier: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+  brand_id: {
+    type: Number,
     required: true,
   },
   main_title: {
@@ -42,6 +39,10 @@ const carSchema = new mongoose.Schema({
   connect: {
     type: String,
     required: true,
+  },
+  updated_at: {
+    type: Date,
+    default: null,
   },
   image_url: {
     type: String,

@@ -3,6 +3,13 @@ const Car = require("../models/cars");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
+///brand.find()
+//url picture
+
+//send brand.id
+
+//find by brand.id
+
 // Handler to get all brands
 exports.getAllBrands = catchAsync(async (req, res, next) => {
   const brands = await Brand.find();

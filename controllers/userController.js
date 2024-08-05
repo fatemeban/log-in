@@ -54,8 +54,6 @@ exports.userInfo = catchAsync(async (req, res, next) => {
   });
 });
 
-
-
 // Example of a protected route
 exports.getProtected = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Access granted", user: req.user });
@@ -65,6 +63,8 @@ exports.getProfile = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
   const user = await User.findById(userId).select("-_id -role -verified"); // Exclude sensitive information like password
 
+
+  
   if (!user) {
     return next(new AppError("User not found", 404));
   }
@@ -75,18 +75,29 @@ exports.getProfile = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-
 exports.updateMe = catchAsync(async (req, res, next) => {
-  if (req.body.mobileNumber) {
-    return next(
-      new AppError(
-        "This route is not for password updates. Please use /updateMyNumber.",
-        400
-      )
-    );
+  const userId = req.user.id;
+  const user = await User.findByIdAndUpdate(userId).populate(
+    "-address -description -phoneNumber"
+  );
+  if (!user) {
+    return next(new AppError("User not found", 404));
   }
-})
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
+if (req.body.mobileNumber) {
+  return next(
+    new AppError(
+      "This route is not for password updates. Please use /updateMyNumber.",
+      400
+    )
+  );
+}
 
 exports.deleteme = catchAsync(async (req, res, next) => {
   ///verify the mobile number
@@ -99,3 +110,6 @@ exports.deleteme = catchAsync(async (req, res, next) => {
 });
 
 exports.updateNum = catchAsync(async (req, res, next) => {});
+
+
+/////////virtule////////pre/post/
