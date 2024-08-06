@@ -19,13 +19,13 @@ exports.requestCode = catchAsync(async (req, res, next) => {
   }
   const verificationCode = Math.floor(1000 + Math.random() * 9999).toString();
   user.verificationCode = verificationCode;
-  user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
+  // user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
 
   await user.save();
 
   const apiKey = process.env.KAVENEGAR_API_KEY;
   const sUrl = `https://api.kavenegar.com/v1/${apiKey}/verify/lookup.json`;
-  console.log(sUrl); /////test
+  ///////console.log(sUrl); /////test
 
   request.post(
     sUrl,
@@ -53,12 +53,19 @@ exports.requestCode = catchAsync(async (req, res, next) => {
 
 exports.verifyCode = catchAsync(async (req, res, next) => {
   const { mobileNumber, verificationCode } = req.body;
+
   if (!mobileNumber || !verificationCode) {
     return next(
       new AppError("Mobile number and verification code are required", 400)
     );
   }
+
+  if (typeof mobileNumber !== "string") {
+    return next(new AppError("Invalid mobile number format", 400));
+  }
+
   const user = await User.findOne({ mobileNumber, verificationCode });
+  //const user = await User.findOne({ mobileNumber });
 
   if (!user) {
     return next(new AppError("User not found", 404));
@@ -69,7 +76,7 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid verification code", 400));
   }
 
-// 5. Check if the verification code has expired
+  // 5. Check if the verification code has expired
   if (Date.now() > user.verificationCodeExpiresAt) {
     return next(new AppError("Verification code has expired", 400));
   }
@@ -83,5 +90,8 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
 
   const token = jwt.sign({ mobileNumber }, process.env.JWT_SECRET, {});
 
-  res.status(200).json({ message: "User verified successfully", token });
+  res.status(200).json({
+    message: "User verified successfully",
+    token,
+  });
 });

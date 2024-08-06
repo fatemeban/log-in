@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true,
+    //required: true,
     trim: true,
   },
   storeName: {
@@ -28,24 +28,24 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   phoneNumber: {
-    type: Number,
-    required: true,
+    type: String,
+    //required: true,
     //unique: true,
     trim: true,
   },
   province: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   city: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   address: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   photo: {

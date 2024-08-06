@@ -27,11 +27,16 @@ router.use(authMiddleware); // Ensure the user is authenticated for all routes
 
 router.patch("/updateMypic", upload.single("photo"), userController.userInfo);
 router.delete("/deleteMe", authMiddleware, userController.deleteme);
-router.patch("/userInfo", authMiddleware, userController.userInfo);
+router.patch(
+  "/userInfo",
+  authMiddleware,
+  upload.single("photo"),
+  userController.userInfo
+);
 router.patch("/updateMe", authMiddleware, userController.updateMe);
 
 router.patch("/updateMyNumber", authMiddleware, userController.updateNum);
-router.get("/Myprofile", authMiddleware, userController.getProfile);
+//router.get("/Myprofile", authMiddleware, userController.getProfile);
 router.get("/protected", authMiddleware, userController.getProtected);
 
 ///////////////////This route is not yet defined////////////////////////
