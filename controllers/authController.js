@@ -17,9 +17,14 @@ exports.requestCode = catchAsync(async (req, res, next) => {
   if (!user) {
     user = new User({ mobileNumber });
   }
+  if (user.verify) {
+    return res.status(403).send({
+      message: "User was verified",
+    });
+  }
   const verificationCode = Math.floor(1000 + Math.random() * 9999).toString();
   user.verificationCode = verificationCode;
-  // user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
+  user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
 
   await user.save();
 

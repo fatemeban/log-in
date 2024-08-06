@@ -40,12 +40,12 @@ const carSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  updated_at: {
+  created_at: {
     type: Date,
     default: null,
   },
-  image_url: {
-    type: String,
+  updated_at: {
+    type: Date,
     default: null,
   },
 });

@@ -85,7 +85,7 @@ userSchema.pre(/^find/, function (next) {
 // });
 userSchema.virtual("profileImageUrl").get(function () {
   // Base URL for images
-  const baseUrl = "http://localhost:3000/";
+  //const baseUrl = "http://localhost:3000/";
   //const baseUrl = "http://localhost:3000/public/img/uploads/";
 
   const photoPath = this.photo.replace(/^\/+/, "");
@@ -95,7 +95,7 @@ userSchema.virtual("profileImageUrl").get(function () {
   // console.log("Full URL:", `${baseUrl}${photoPath}`);
 
   // Return the complete URL
-  return `${baseUrl}${photoPath}`;
+  return `${photoPath}`;
 });
 
 userSchema.set("toJSON", { virtuals: true });

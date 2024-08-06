@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const userRoutes = require("./Routes/userRouter");
 const authRoutes = require("./Routes/authRouter");
-const brandRouter = require("./Routes/brandRouter");
 const carRoutes = require("./Routes/carRouter");
 const path = require("path");
 
@@ -19,7 +18,6 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/car", carRoutes);
-app.use("/api/brand", brandRouter);
 app.use(express.static("public"));
 
 mongoose

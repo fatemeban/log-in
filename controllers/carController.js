@@ -2,7 +2,10 @@ const Brand = require("../models/brands");
 const Car = require("../models/cars");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const { Schema } = require("mongoose");
+const APIFeatures = require("../utils/apiFeatures");
 
+console.log(Brand);
 ///brand.find()
 //url picture
 
@@ -12,9 +15,11 @@ const catchAsync = require("../utils/catchAsync");
 
 // Handler to get all brands
 exports.getAllBrands = catchAsync(async (req, res, next) => {
-  const brands = await Brand.find();
+  // const brands = await Brand.findAll();
+  const features = new APIFeatures(Brand.find(), req.query).filter();
+  const brands = await features.query;
 
-  if (!brands.length) {
+  if (!brands) {
     return next(new AppError("No brands found", 404));
   }
 
