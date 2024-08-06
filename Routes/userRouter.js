@@ -14,7 +14,7 @@ if (!fs.existsSync(uploadDir)) {
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/img/uploads/"); // Set the destination folder
+    cb(null, "public/img/UserProfile/"); // Set the destination folder
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname); // Set the file name
