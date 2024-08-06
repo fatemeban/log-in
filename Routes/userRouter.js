@@ -25,7 +25,7 @@ const upload = multer({ storage: storage });
 
 router.use(authMiddleware); // Ensure the user is authenticated for all routes
 
-router.patch("/updateMypic", upload.single("photo"), userController.userInfo);
+//router.patch("/updateMypic", upload.single("photo"), userController.userInfo);
 router.delete("/deleteMe", authMiddleware, userController.deleteme);
 router.patch(
   "/userInfo",

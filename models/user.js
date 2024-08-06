@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: "default.png",
+    //default: "default.png",
   },
   description: {
     type: String,
@@ -76,19 +76,26 @@ userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
-userSchema.pre("save", async function (next) {
-  const user = this;
+// userSchema.pre("save", async function (next) {
+//   const user = this;
 
-  console.log("just befor savaing");
+//   console.log("just befor savaing");
 
-  next();
-});
+//   next();
+// });
 userSchema.virtual("profileImageUrl").get(function () {
   // Base URL for images
-  const baseUrl = "http://localhost:3000/public/img/uploads/";
+  const baseUrl = "http://localhost:3000/";
+  //const baseUrl = "http://localhost:3000/public/img/uploads/";
+
+  const photoPath = this.photo.replace(/^\/+/, "");
+
+  // console.log("Base URL:", baseUrl);
+  // console.log("Photo Path:", photoPath);
+  // console.log("Full URL:", `${baseUrl}${photoPath}`);
 
   // Return the complete URL
-  return `${baseUrl}${this.photo}`;
+  return `${baseUrl}${photoPath}`;
 });
 
 userSchema.set("toJSON", { virtuals: true });
