@@ -45,7 +45,7 @@ const brandSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    image_url: {
+    image_name: {
       type: String,
       default: null,
     },

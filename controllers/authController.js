@@ -24,7 +24,7 @@ exports.requestCode = catchAsync(async (req, res, next) => {
   }
   const verificationCode = Math.floor(1000 + Math.random() * 9999).toString();
   user.verificationCode = verificationCode;
-  user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
+  //user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
 
   await user.save();
 

@@ -48,6 +48,10 @@ const carSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  image_name: {
+    type: String,
+    default: null,
+  },
 });
 
 // carSchema
