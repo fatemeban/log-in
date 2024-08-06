@@ -22,7 +22,7 @@ exports.requestCode = catchAsync(async (req, res, next) => {
       message: "User was verified",
     });
   }
-  const verificationCode = Math.floor(1000 + Math.random() * 9999).toString();
+  const verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
   user.verificationCode = verificationCode;
   //user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
 
