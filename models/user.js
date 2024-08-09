@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   mobileNumber: {
     type: String,
     required: true,
-    //unique: true,
+    unique: true,
   },
   verificationCode: {
     type: String,
@@ -69,6 +69,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 5,
   },
+  //timestamps: true,
 });
 
 userSchema.pre(/^find/, function (next) {

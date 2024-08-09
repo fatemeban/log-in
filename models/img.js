@@ -23,7 +23,7 @@ const imgScheme = new mongoose.Schema({
   },
   connect: {
     type: String,
-    default: null,
+    require: true,
   },
 
   created_at: {
@@ -36,4 +36,5 @@ const imgScheme = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("img", imgScheme);
+const img = mongoose.model("img", imgScheme);
+module.exports = img;

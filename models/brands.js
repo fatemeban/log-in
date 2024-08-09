@@ -45,9 +45,9 @@ const brandSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    image_name: {
-      type: String,
-      default: null,
+    brand_img: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "img",
     },
   }
   //{ timestamps: true }

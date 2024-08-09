@@ -22,9 +22,15 @@ exports.requestCode = catchAsync(async (req, res, next) => {
       message: "User was verified",
     });
   }
-  const verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
+  const verificationCode = Math.floor(1000 + Math.random() * 8999).toString();
   user.verificationCode = verificationCode;
-  //user.verificationCodeExpiresAt = Date.now() + 2 * 60 * 1000; // 2 minutes
+  user.verificationCodeExpiresAt = Date.now() + 0.5 * 60 * 1000; // 2 minutes
+
+  //console.log(verificationCodeExpiresAt);
+  console.log(
+    "Verification code expires at:",
+    new Date(user.verificationCodeExpiresAt).toISOString()
+  );
 
   await user.save();
 
@@ -50,7 +56,7 @@ exports.requestCode = catchAsync(async (req, res, next) => {
         console.error("Unexpected response status:", response.statusCode);
         return next(new AppError("Error sending SMS", 500));
       }
-      console.log(body);
+      console.log("verify code send");
       res.status(200).json({ message: "Verification code sent" });
     }
   );
@@ -69,14 +75,18 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid mobile number format", 400));
   }
 
-  const user = await User.findOne({ mobileNumber, verificationCode });
-  //const user = await User.findOne({ mobileNumber });
+  //const user = await User.findOne({ mobileNumber, verificationCode });
+  const user = await User.findOne({ mobileNumber });
 
   if (!user) {
     return next(new AppError("User not found", 404));
   }
-
+/////////////
+  if (user.verified) {
+    return next(new AppError("you are log in now"), 400);
+  }
   // 4. Check if the verification code matches
+
   if (user.verificationCode !== verificationCode) {
     return next(new AppError("Invalid verification code", 400));
   }
