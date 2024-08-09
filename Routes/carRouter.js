@@ -6,7 +6,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/brands", authMiddleware, carController.getAllBrands);
 // Route to get all cars of a selected brand
-router.get("/carsbybrandId/:id", authMiddleware, carController.getCarsByBrand);
+router.get("/carsbybrandId/:id", carController.getCarsByBrand);
 // router.get("/cars", authMiddleware, carController.getCars);
 // router.patch("/cars", authMiddleware, carController.updateCar);
 
