@@ -25,6 +25,7 @@ exports.userInfo = catchAsync(async (req, res, next) => {
     "description",
     "address",
     "photo",
+    "cars"
   ];
 
   // Filter the incoming request body
@@ -82,26 +83,33 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     "storeName",
     "city",
     "province",
-    "rate"
+    "rate",
+    "cars"
   );
+  
   if (req.file) filteredBody.photo = req.file.filename;
+  console.log(req.body.cars);
+
+  if (req.body.cars && Array.isArray(req.body.cars)) {
+    filteredBody.cars = req.body.cars;
+  }
 
   // 3) Update user document
-  // const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-  //   new: true,
-  //   runValidators: true,
-  //   returnDocument: "after",
-  // });
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true,
+    returnDocument: "after",
+  });
 
-  // if (!updatedUser) {
-  //   return next(new AppError("User not found", 404));
-  // }
-  // res.status(200).json({
-  //   status: "success",
-  //   data: {
-  //     user: updatedUser,
-  //   },
-  // });
+  if (!updatedUser) {
+    return next(new AppError("User not found", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: updatedUser,
+    },
+  });
 });
 exports.getProtected = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Access granted", user: req.user });

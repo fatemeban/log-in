@@ -69,6 +69,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 5,
   },
+  cars: [String],
+
   //timestamps: true,
 });
 

@@ -81,7 +81,7 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("User not found", 404));
   }
-/////////////
+  /////////////
   if (user.verified) {
     return next(new AppError("you are log in now"), 400);
   }
@@ -92,7 +92,7 @@ exports.verifyCode = catchAsync(async (req, res, next) => {
   }
 
   // 5. Check if the verification code has expired
-  if (Date.now() > user.verificationCodeExpiresAt) {
+  if (Date.now() > new Date(user.verificationCodeExpiresAt)) {
     return next(new AppError("Verification code has expired", 400));
   }
   ///////return error if the verification code is not valid
